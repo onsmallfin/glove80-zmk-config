@@ -1,7 +1,6 @@
-
 /*
  * Copyright (c) 2020 The ZMK Contributors
- * Copyright (c) 2023 Innaworks Development Limited, trading as MoErgo
+ * Copyright (c) 2025 Innaworks Development Limited, trading as MoErgo
  *
  * SPDX-License-Identifier: MIT
  */
@@ -30,6 +29,8 @@
 #define LAYER_Magic 3
 #define LAYER_colemak 4
 #define LAYER_aries 5
+#define LAYER_Base_copy 6
+#define LAYER_symbol2 7
 
 /* To deal with the situation where there is no Lower layer, to keep &lower happy */
 #ifndef LAYER_Lower
@@ -39,8 +40,10 @@
 /* Custom Device-tree */
 
 
+/* Input Listeners */
 
-/* Glove80 system behavior & macros */
+
+/* System behavior and Macros */
 / {
     behaviors {
         // For the "layer" key, it'd nice to be able to use it as either a shift or a toggle.
@@ -289,19 +292,49 @@ behaviors {
             bindings = <&kp N6>, <&caret>;
             mods = <(MOD_LSFT|MOD_RSFT)>;
         };
-    };
+   Nsix2: no_6_2 {
+            compatible = "zmk,behavior-mod-morph";
+            #binding-cells = <0>;
+            bindings = <&kp N6>, <&caret2>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+};
 };
 
 /* Automatically generated macro definitions */
 / {
     macros {
-    
+
         caret: caret {
             label = "&CARET";
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
             bindings = <&kp LS(N6)>
                 , <&kp LS(N6)>;
+        };
+
+        regapos: regapos {
+            label = "&REGAPOS";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp SQT>
+                , <&kp SPACE>;
+        };
+
+        reggrave: reggrave {
+            label = "&REGGRAVE";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp GRAVE>
+                , <&kp SPACE>;
+        };
+
+        caret2: caret2 {
+            label = "&CARET2";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LS(N6)>
+                , <&kp SPACE>;
         };
     };
 };
@@ -313,11 +346,9 @@ behaviors {
         HT_MO_L: HT_MO_L {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            tapping-term-ms = <180>;
+            tapping-term-ms = <140>;
             bindings = <&mo>, <&kp>;
             flavor = "tap-preferred";
-            require-prior-idle-ms = <150>;
-            retro-tap;
             hold-trigger-key-positions = <28 16 5 17 18 6 7 19 31 29 30 42 41 40 58 59 61 60 76 75 77 43 44 32 20 8 9 21 33 45 63 62 78 79 57 56 55 72 73 74>;
         };
 
@@ -334,10 +365,10 @@ behaviors {
         HT_KP_L: HT_KP_L {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            tapping-term-ms = <200>;
+            tapping-term-ms = <190>;
             bindings = <&kp>, <&kp>;
             flavor = "tap-preferred";
-            require-prior-idle-ms = <150>;
+            require-prior-idle-ms = <120>;
             hold-trigger-key-positions = <28 16 5 17 18 6 7 19 31 29 30 42 41 40 58 59 61 60 76 75 77 43 44 32 20 8 9 21 33 45 63 62 78 79 57 56 55 72 73 74>;
         };
 
@@ -353,27 +384,44 @@ behaviors {
         HT_KP_R: HT_KP_R {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            tapping-term-ms = <200>;
+            tapping-term-ms = <190>;
             bindings = <&kp>, <&kp>;
             flavor = "tap-preferred";
-            require-prior-idle-ms = <125>;
+            require-prior-idle-ms = <120>;
             hold-trigger-key-positions = <0 1 11 10 23 22 34 35 46 64 65 47 66 36 48 24 12 2 3 4 14 13 25 26 38 37 49 68 67 50 51 39 27 15 52 69 70 53 54 71>;
         };
 
         umlaut: umlaut {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
-            tapping-term-ms = <400>;
+            tapping-term-ms = <350>;
             bindings = <&kp>, <&kp>;
             flavor = "tap-preferred";
-            require-prior-idle-ms = <400>;
+            require-prior-idle-ms = <300>;
             hold-trigger-key-positions = <>;
         };
     };
 };
 
 /* Automatically generated combos definitions */
+/ {
+      combos {
+          compatible = "zmk,combos";
+                  combo_controlc {
+            timeout-ms = <50>;
+            key-positions = <48 49>;
+            bindings = <&kp LC(C)>;
+            require-prior-idle-ms = <200>;
+        };
 
+        combo_controlv {
+            timeout-ms = <50>;
+            key-positions = <49 50>;
+            bindings = <&kp LC(V)>;
+            require-prior-idle-ms = <200>;
+        };
+      };
+    };
 
 /* Automatically generated keymap */
 / {
@@ -417,7 +465,7 @@ behaviors {
         layer_Magic {
             bindings = <
   &bt BT_CLR            &none            &none            &none            &none                                                                                  &none   &none   &none   &none  &bt BT_CLR_ALL
-       &none           &tog 0            &none            &none           &tog 4           &tog 5                                                         &none   &none   &none   &none   &none           &none
+       &none           &tog 0            &none            &none           &tog 4           &tog 5                                                        &tog 6   &none   &none   &none   &none           &none
        &none  &rgb_ug RGB_SPI  &rgb_ug RGB_SAI  &rgb_ug RGB_HUI  &rgb_ug RGB_BRI  &rgb_ug RGB_TOG                                                         &none   &none   &none   &none   &none           &none
  &bootloader  &rgb_ug RGB_SPD  &rgb_ug RGB_SAD  &rgb_ug RGB_HUD  &rgb_ug RGB_BRD  &rgb_ug RGB_EFF                                                         &none   &none   &none   &none   &none     &bootloader
   &sys_reset            &to 0            &none            &none            &none            &none   &bt_2   &bt_3         &none   &none   &none   &none   &none   &none   &none   &none   &none      &sys_reset
@@ -444,6 +492,28 @@ behaviors {
               &kp ESC  &umlaut RA(P) O  &umlaut RA(Q) A  &HT_KP_L LGUI I  &HT_MO_L 1 N   &kp H                                                                  &kp L   &kp T     &kp S     &kp R     &kp D    &kp SQT
             &kp GRAVE      &kp RA(SQT)        &kp COMMA            &kp Y         &kp F   &kp Z  &kp LSHFT  &kp LCTRL   &lower  &kp LGUI  &kp RCTRL  &kp RSHFT   &kp J   &kp G     &kp W   &kp DOT  &kp FSLH  &kp PG_UP
  &magic LAYER_Magic 0         &kp HOME          &kp END         &kp LEFT     &kp RIGHT              &kp E   &kp BSPC  &kp DEL    &tog 0    &kp RET  &kp SPACE          &kp UP  &kp DOWN  &kp LBKT  &kp RBKT  &kp PG_DN
+            >;
+        };
+
+        layer_Base_copy {
+            bindings = <
+               &kp F1           &kp F2   &kp F3           &kp F4        &kp F5                                                                                                    &kp F6     &kp F7           &kp F8    &kp F9    &kp F10
+            &kp EQUAL           &kp N1   &kp N2           &kp N3        &kp N4  &kp N5                                                                           &Nsix2           &kp N7     &kp N8           &kp N9    &kp N0  &kp MINUS
+              &kp TAB            &kp Q    &kp W            &kp E         &kp R   &kp T                                                                            &kp Y  &umlaut RA(Y) U      &kp I  &umlaut RA(P) O     &kp P   &kp BSLH
+              &kp ESC  &umlaut RA(Q) A    &kp S  &HT_KP_L LGUI D  &HT_MO_L 7 F   &kp G                                                                  &HT_KP_R RGUI H     &HT_MO_R 7 J      &kp K            &kp L  &kp SEMI    &kp SQT
+            &kp GRAVE            &kp Z    &kp X            &kp C         &kp V   &kp B  &kp LSHFT  &kp LCTRL    &lower  &kp LGUI  &kp RCTRL  &kp RSHFT            &kp N            &kp M  &kp COMMA          &kp DOT  &kp FSLH  &kp PG_UP
+ &magic LAYER_Magic 0         &kp HOME  &kp END         &kp LEFT     &kp RIGHT           &kp BSPC    &kp DEL  &kp LALT  &kp RALT    &kp RET  &kp SPACE                            &kp UP   &kp DOWN         &kp LBKT  &kp RBKT  &kp PG_DN
+            >;
+        };
+
+        layer_symbol2 {
+            bindings = <
+  &none      &none      &none         &none         &none                                                                                                         &none          &none   &none     &none   &none
+  &none      &none     &trans        &trans        &trans  &trans                                                                               &kp LS(N6)        &none          &none   &none     &none   &none
+  &none     &trans     &trans        &trans      &kp BSLH  &trans                                                                                    &none     &kp LBKT       &kp RBKT   &none     &none   &none
+  &none  &kp LC(C)  &kp LC(V)  &kp LS(LBKT)  &kp LS(RBKT)  &trans                                                                                &kp EQUAL  &kp KP_LPAR    &kp KP_RPAR   &none  &kp BSLH   &none
+  &none     &trans     &trans      &regapos     &reggrave  &trans     &kp LSHFT           &none   &none   &none         &none        &trans  &kp LS(MINUS)    &kp MINUS  &kp LS(EQUAL)   &none     &none   &none
+  &none     &trans     &trans        &trans        &trans          &msc SCRL_UP  &msc SCRL_DOWN  &tog 0   &none  &kp LS(LBKT)  &kp LS(RBKT)                       &none          &none   &none     &none   &none
             >;
         };
 
